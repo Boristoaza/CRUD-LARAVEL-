@@ -131,9 +131,9 @@
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
-            <tbody class="Tabla_datos ">
+            <tbody class="Tabla_datos " data-perfil="{{route('perfil.idol')}}">
               @foreach($infoIdols as $idol)
-              <tr>
+              <!-- <tr>
                 <!-- <th scope="row">{{ $idol->id }}</th> -->
                 <td>{{ $idol->nombre }}</td>
                 <td>{{ $idol->edad }}</td>
@@ -141,19 +141,21 @@
                 <td>{{ $idol->datos_curiosos }}</td>
                 <td>
                   <div id="btnDinamicos" class="btnDinamicos btn-group d-flex gap-1" role="group" aria-label="Acciones">
+                    <!-- Botón dentro de la tabla -->
                     <button type="button" class="botonPerfil btn btn-primary px-4 py-2 fw-bold shadow-sm text-light"
                       data-bs-toggle="modal" data-bs-target="#perfil" data-id="{{$idol->id}}"
                       data-perfil="{{route('perfil.idol')}}">
-                      Perfil <i class="bi bi-person-check"></i></i>
+                      Perfil <i class="bi bi-person-check"></i>
                     </button>
+
 
                     <button type="button" class="btneditar btn btn-warning px-4 py-2 fw-bold shadow-sm text-dark"
                       data-bs-toggle="modal" data-bs-target="#editar" data-id="{{$idol->id}}">
                       <i class="fas fa-edit"></i> Editar <i class="bi bi-pen"></i>
                     </button>
 
-                    <button class="btnBorrar btn btn-danger px-4 py-2 fw-bold shadow-sm"
-                      data-borrar="{{ $idol->id }}" data-nombre="{{ $idol->nombre }}" data-delete="{{ route('eliminar.trabajador') }}">
+                    <button class="btnBorrar btn btn-danger px-4 py-2 fw-bold shadow-sm" data-borrar="{{ $idol->id }}"
+                      data-nombre="{{ $idol->nombre }}" data-delete="{{ route('eliminar.trabajador') }}">
                       <i class="fas fa-trash-alt"></i> Borrar <i class="bi bi-trash3"></i>
                     </button>
 
@@ -161,7 +163,7 @@
 
                 </td>
               </tr>
-              @endforeach
+              @endforeach -->
             </tbody>
           </table>
           <div class="container text-center">

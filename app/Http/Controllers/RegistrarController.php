@@ -83,4 +83,5 @@ class RegistrarController extends Controller
        'query perfil controller ' => $queryPerfil,
      ]);
    }
+
 };

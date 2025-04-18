@@ -67,7 +67,7 @@ $(document).ready(function () {
                       <td>
                         <div id="btnDinamicos" class="btnDinamicos btn-group d-flex gap-1" role="group" aria-label="Acciones">
                           <button type="button" class="botonPerfil btn btn-primary px-4 py-2 fw-bold shadow-sm text-light"
-                            data-bs-toggle="modal" data-bs-target="#perfil" data-id="{{$idol->id}}"
+                            data-bs-toggle="modal" data-bs-target="#perfil" data-id="${element.id}"
                             data-perfil="{{route('perfil.idol')}}">
                             Perfil <i class="bi bi-person-check"></i></i>
                           </button>
@@ -98,11 +98,60 @@ $(document).ready(function () {
 
 
 // Evento para el botón de perfil
-$(document).on('click', '.botonPerfil', function () {
-   var urlPerfil = $(this).data('perfil');
-   console.log('Redirigiendo a perfil:', urlPerfil);
+$(document).on('click', '.botonPerfil', function() {
+  let id = $(this).data('id');
+  let perfilUrl = '/perfil';
+
+  console.log('ID:', id);
+  console.log('Perfil URL:', perfilUrl);
+
+  // Aquí puedes actualizar el modal con los datos del usuario si es necesario
+  $('#perfil').find('.modal-body').text('Cargando perfil de usuario ID: ' + id);
 });
 
+$(document).ready(function () {
+  $('.botonPerfil').click(function () {
+    const id = $(this).data('id');
+    const perfilData = { perfilData: id };
+    const urlTEST = $(this).data('perfil');
+
+
+    $.ajax({
+      url: urlTEST,
+      method: 'POST',
+      data: perfilData,
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+      },
+      success: function (respuesta) {
+        if (respuesta['query perfil controller '] && respuesta['query perfil controller '].length > 0) {
+          $('.modal-body.datoPerfil').empty();
+
+          respuesta['query perfil controller '].forEach(element => {
+            const content = `
+              <div class="perfil">
+                <h3 class="perfil-titulo">Perfil de ${element.nombre}</h3>
+                <div class="foto-perfil">
+                  <p><strong>Edad:</strong> ${element.edad} años</p>
+                  <p><strong>Datos Curiosos:</strong> ${element.datos_curiosos}</p>
+                  <p><strong>Actividad jajaj:</strong> ${element.actividad}</p>
+                </div>
+              </div>
+            `;
+            $('.modal-body.datoPerfil').append(content);
+          });
+
+          identificadorPorID(perfilData);
+        } else {
+          alert("No se encontró información del perfil.");
+        }
+      },
+      error: function (respuestaTxt) {
+        alert('Error crítico: ' + respuestaTxt);
+      }
+    });
+  });
+});
 
 
 $(document).ready(function ( ) {
@@ -195,48 +244,6 @@ $(document).ready(function () {
 });
 
 // imprimir
-$(document).ready(function () {
-  $('.botonPerfil').click(function () {
-    const id = $(this).data('id');
-    const perfilData = { perfilData: id };
-    const urlTEST = $(this).data('perfil');
-
-    $.ajax({
-      url: urlTEST,
-      method: 'POST',
-      data: perfilData,
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-      },
-      success: function (respuesta) {
-        if (respuesta['query perfil controller '] && respuesta['query perfil controller '].length > 0) {
-          $('.modal-body.datoPerfil').empty();
-
-          respuesta['query perfil controller '].forEach(element => {
-            const content = `
-              <div class="perfil">
-                <h3 class="perfil-titulo">Perfil de ${element.nombre}</h3>
-                <div class="foto-perfil">
-                  <p><strong>Edad:</strong> ${element.edad} años</p>
-                  <p><strong>Datos Curiosos:</strong> ${element.datos_curiosos}</p>
-                  <p><strong>Actividad:</strong> ${element.actividad}</p>
-                </div>
-              </div>
-            `;
-            $('.modal-body.datoPerfil').append(content);
-          });
-
-          identificadorPorID(perfilData);
-        } else {
-          alert("No se encontró información del perfil.");
-        }
-      },
-      error: function (respuestaTxt) {
-        alert('Error crítico: ' + respuestaTxt);
-      }
-    });
-  });
-});
 
 
 function identificadorPorID(id) {
