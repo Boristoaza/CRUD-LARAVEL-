@@ -131,40 +131,34 @@
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
-            <tbody class="Tabla_datos " data-perfil="{{route('perfil.idol')}}">
+            <tbody class="Tabla_datos">
               @foreach($infoIdols as $idol)
-              <!-- <tr>
-                <!-- <th scope="row">{{ $idol->id }}</th> -->
+              <tr>
                 <td>{{ $idol->nombre }}</td>
                 <td>{{ $idol->edad }}</td>
                 <td>{{ $idol->actividad }}</td>
                 <td>{{ $idol->datos_curiosos }}</td>
                 <td>
                   <div id="btnDinamicos" class="btnDinamicos btn-group d-flex gap-1" role="group" aria-label="Acciones">
-                    <!-- Botón dentro de la tabla -->
                     <button type="button" class="botonPerfil btn btn-primary px-4 py-2 fw-bold shadow-sm text-light"
-                      data-bs-toggle="modal" data-bs-target="#perfil" data-id="{{$idol->id}}"
-                      data-perfil="{{route('perfil.idol')}}">
+                      data-bs-toggle="modal" data-bs-target="#perfil" data-id="{{ $idol->id }}"
+                      data-perfil="{{ route('perfil.idol') }}">
                       Perfil <i class="bi bi-person-check"></i>
                     </button>
-
-
                     <button type="button" class="btneditar btn btn-warning px-4 py-2 fw-bold shadow-sm text-dark"
-                      data-bs-toggle="modal" data-bs-target="#editar" data-id="{{$idol->id}}">
+                      data-bs-toggle="modal" data-bs-target="#editar" data-id="{{ $idol->id }}">
                       <i class="fas fa-edit"></i> Editar <i class="bi bi-pen"></i>
                     </button>
-
                     <button class="btnBorrar btn btn-danger px-4 py-2 fw-bold shadow-sm" data-borrar="{{ $idol->id }}"
-                      data-nombre="{{ $idol->nombre }}" data-delete="{{ route('eliminar.trabajador') }}">
+                      data-nombre="{{ $idol->nombre }}" data-eliminarurl="{{ route('eliminar.trabajador') }}">
                       <i class="fas fa-trash-alt"></i> Borrar <i class="bi bi-trash3"></i>
                     </button>
-
                   </div>
-
                 </td>
               </tr>
-              @endforeach -->
+              @endforeach
             </tbody>
+
           </table>
           <div class="container text-center">
             <div class="w-10">
@@ -229,7 +223,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="row">
+          <div class="row contendorEditar">
             <!-- Primera columna -->
             <div class="col-12 col-md-6 mb-4">
               <input type="text" class="form-control shadow-sm p-3 rounded-3" placeholder="Nombre" id="nombreEditar"
@@ -247,7 +241,6 @@
                 id="actividadEditar" name="actividadEditar">
             </div>
           </div>
-          <div class="dataEditar"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">Cerrar</button>
@@ -356,6 +349,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body datoPerfil">
+
         </div>
         <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -451,6 +445,10 @@
   </div>
 
   <!-- Scripts -->
+  <script>
+  // const RUTA_DATA_IDOL = "{{ route('data.idol') }}";
+  const rutaEliminar = "{{route('eliminar.trabajador')}}";
+  </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/registrarUsuario.js') }}"></script>

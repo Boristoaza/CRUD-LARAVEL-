@@ -1,160 +1,155 @@
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Delegación de eventos para los botones de la tabla
-  document.querySelector(".Tabla_datos").addEventListener("click", function (event) {
-      if (event.target.closest(".botonPerfil")) {
-          let id = event.target.closest(".botonPerfil").dataset.id;
-          alert("Ver perfil de ID: " + id);
-      }
-      if (event.target.closest(".btneditar")) {
-          let id = event.target.closest(".btneditar").dataset.id;
-          alert("Editar usuario con ID: " + id);
-      }
-      if (event.target.closest(".btnBorrar")) {
-          let name = event.target.closest(".btnBorrar").dataset.nombre;
-          let nombre = event.target.closest(".btnBorrar").dataset.borrar;
-          let url = event.target.closest(".btnBorrar").dataset.delete;
-      }
-  });
-
-  // Función para filtrar la tabla
-  function filtrarTabla() {
-      let filtro = document.getElementById("Buscador").value.toLowerCase();
-      let filas = document.querySelectorAll(".Tabla_datos tr");
-
-      filas.forEach(fila => {
-          let nombre = fila.querySelector("td:first-child").textContent.toLowerCase();
-          if (nombre.includes(filtro)) {
-              fila.style.display = "";
-          } else {
-              fila.style.display = "none";
-          }
-      });
-  }
-
-  document.getElementById("Buscador").addEventListener("input", filtrarTabla);
-
-  document.getElementById("btnBuscador").addEventListener("click", function (event) {
-      event.preventDefault(); // Evita que se recargue la página
-      filtrarTabla();
-  });
-});
-
-// buscador
 $(document).ready(function () {
-  $('#btnBuscador').click(function () {
-      const inputData = $('#Buscador').val();
-      const url = $(this).data('url');
-      $.ajax({
-          url: url,
-          type: 'POST',
-          data: { datos: inputData },
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          },
-          success: function (respuesta) {
-            console.log('Respuesta recibida:', respuesta);
-            var tablaContainer = $('.Tabla_datos');
-            tablaContainer.empty();
-            if (respuesta.resultado && Array.isArray(respuesta.resultado) && respuesta.resultado.length > 0) {
-                respuesta.resultado.forEach(element => {
-                    var tabla = `
-                      <tr>
-                      <td> ${ element.nombre }</td>
-                      <td> ${ element.edad }</td>
-                      <td> ${ element.actividad }</td>
-                      <td> ${ element.datos_curiosos }</td>
-                      <td>
-                        <div id="btnDinamicos" class="btnDinamicos btn-group d-flex gap-1" role="group" aria-label="Acciones">
-                          <button type="button" class="botonPerfil btn btn-primary px-4 py-2 fw-bold shadow-sm text-light"
-                            data-bs-toggle="modal" data-bs-target="#perfil" data-id="${element.id}"
-                            data-perfil="{{route('perfil.idol')}}">
-                            Perfil <i class="bi bi-person-check"></i></i>
-                          </button>
-                          <button type="button" class="btneditar btn btn-warning px-4 py-2 fw-bold shadow-sm text-dark"
-                            data-bs-toggle="modal" data-bs-target="#editar" data-id="{{$idol->id}}">
-                            <i class="fas fa-edit"></i> Editar <i class="bi bi-pen"></i>
-                          </button>
-                          <button class="btnBorrar btn btn-danger px-4 py-2 fw-bold shadow-sm"
-                            data-borrar="{{ $idol->id }}" data-nombre="{{ $idol->nombre }}" data-delete="{{ route('eliminar.trabajador') }}">
-                            <i class="fas fa-trash-alt"></i> Borrar ajajajhp <i class="bi bi-trash3"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>`;
-                    tablaContainer.append(tabla);
-                });
-            } else {
-                console.log('No se recibieron datos o el formato es incorrecto.');
-            }
-         },
-          error: function (xhr, status, error) {
-              console.error('Error en AJAX:', status, error);
-              alert('Ocurrió un error en la solicitud.');
-          }
-      });
-  });
-});
-
-
-// Evento para el botón de perfil
-$(document).on('click', '.botonPerfil', function() {
-  let id = $(this).data('id');
-  let perfilUrl = '/perfil';
-
-  console.log('ID:', id);
-  console.log('Perfil URL:', perfilUrl);
-
-  // Aquí puedes actualizar el modal con los datos del usuario si es necesario
-  $('#perfil').find('.modal-body').text('Cargando perfil de usuario ID: ' + id);
-});
-
-$(document).ready(function () {
-  $('.botonPerfil').click(function () {
-    const id = $(this).data('id');
-    const perfilData = { perfilData: id };
-    const urlTEST = $(this).data('perfil');
-
-
+  // === BUSCADOR ===
+  $('#btnBuscador').click(function (event) {
+    event.preventDefault();
+    const inputData = $('#Buscador').val();
+    const url = $(this).data('url');
     $.ajax({
-      url: urlTEST,
+      url: url,
+      type: 'POST',
+      data: { datos: inputData },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function (respuesta) {
+        const tablaContainer = $('.Tabla_datos');
+        tablaContainer.empty();
+
+        if (respuesta.resultado && Array.isArray(respuesta.resultado) && respuesta.resultado.length > 0) {
+          respuesta.resultado.forEach(idol => {
+            const tabla = `
+              <tr>
+                <td>${idol.nombre}</td>
+                <td>${idol.edad}</td>
+                <td>${idol.actividad}</td>
+                <td>${idol.datos_curiosos}</td>
+                <td>
+                  <div class="btnDinamicos btn-group d-flex gap-1" role="group" aria-label="Acciones">
+                    <button type="button" class="botonPerfil btn btn-primary px-4 py-2 fw-bold shadow-sm text-light"
+                      data-bs-toggle="modal" data-bs-target="#perfil"
+                     data-id="${idol.nombre}" data-edad="${idol.edad}" data-actividad="${idol.actividad}" data-curiosidad="${idol.datos_curiosos}"
+                      data-perfil="${$('#btnBuscador').val()}">
+                      Perfil <i class="bi bi-person-check"></i>
+                    </button>
+                    <button type="button" class="btneditar btn btn-warning px-4 py-2 fw-bold shadow-sm text-dark"
+                      data-bs-toggle="modal" data-bs-target="#editar" data-id="${idol.id}">
+                      <i class="fas fa-edit"></i> Editar <i class="bi bi-pen"></i>
+                    </button>
+                    <button class="btnBorrar btn btn-danger px-4 py-2 fw-bold shadow-sm"
+                      data-borrar="${idol.id}">
+                      <i class="fas fa-trash-alt"></i> Borrar <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+            tablaContainer.append(tabla);
+          });
+        } else {
+          tablaContainer.append('<tr><td colspan="5">No se encontraron registros.</td></tr>');
+        }
+
+        $('.Tabla_datos').show();
+      },
+      error: function (xhr, status, error) {
+        console.error('Error en AJAX:', status, error);
+        alert('Ocurrió un error en la solicitud.');
+      }
+    });
+  });
+  //  == buscaodr dinamico ==
+
+  $('#Buscador').on('keyup', function() {
+    const valor = $(this).val().toLowerCase();
+    $('.Tabla_datos tr').filter(function() {
+      $(this).toggle($(this).text().toLowerCase().includes(valor));
+    });
+  });
+
+
+  // == delegacion de eventos ==
+  $(document).on('click', '.botonPerfil', function (event) {
+    event.preventDefault()
+    const data = $(this).data('id');
+    const dataEdad = $(this).data('edad');
+    const dataActividad = $(this).data('actividad');
+    const dataCuriosidad = $(this).data('curiosidad');
+    const perfilContenedor = $('.datoPerfil');
+    perfilContenedor.empty();
+    perfilContenedor.append(
+      `<div class="perfil">
+        <h3 class="perfil-titulo">Perfil de ${data}</h3>
+           <div class="foto-perfil">
+           <p><strong>Edad:</strong> ${dataEdad} años</p>
+           <p><strong>Datos Curiosos:</strong> ${dataCuriosidad}</p>
+           <p><strong>Actividad:</strong> ${dataActividad}</p>
+        </div>
+      </div> `
+    )
+  });
+
+  $(document).on('click', '.btnBorrar', function (event) {
+    event.preventDefault();
+    const ID = $(this).data('borrar');
+    $.ajax({
+      url: urlEliminar,
       method: 'POST',
-      data: perfilData,
+      data: { id: ID },
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
       },
       success: function (respuesta) {
-        if (respuesta['query perfil controller '] && respuesta['query perfil controller '].length > 0) {
-          $('.modal-body.datoPerfil').empty();
+        alert('Eliminado correctamente: ' + JSON.stringify(respuesta));
+      },
+      error: function (xhr) {
+        alert('Error crítico');
+        console.error(xhr.responseText);
+      }
+    });
+  });
+  // === PERFIL DINÁMICO ===
+  $(document).on('click', '.botonPerfil', function () {
+    const id = $(this).data('id');
+    const url = $(this).data('perfil');
 
-          respuesta['query perfil controller '].forEach(element => {
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: { perfilData: id },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+      },
+      success: function (respuesta) {
+        const perfilInfo = respuesta['query perfil controller '] || [];
+
+        $('.modal-body.datoPerfil').empty();
+
+        if (perfilInfo.length > 0) {
+          perfilInfo.forEach(idol => {
             const content = `
               <div class="perfil">
-                <h3 class="perfil-titulo">Perfil de ${element.nombre}</h3>
+                <h3 class="perfil-titulo">Perfil de ${idol.nombre}</h3>
                 <div class="foto-perfil">
-                  <p><strong>Edad:</strong> ${element.edad} años</p>
-                  <p><strong>Datos Curiosos:</strong> ${element.datos_curiosos}</p>
-                  <p><strong>Actividad jajaj:</strong> ${element.actividad}</p>
+                  <p><strong>Edad:</strong> ${idol.edad} años</p>
+                  <p><strong>Datos Curiosos:</strong> ${idol.datos_curiosos}</p>
+                  <p><strong>Actividad:</strong> ${idol.actividad}</p>
                 </div>
               </div>
             `;
             $('.modal-body.datoPerfil').append(content);
           });
 
-          identificadorPorID(perfilData);
+          identificadorPorID(id);
         } else {
           alert("No se encontró información del perfil.");
         }
       },
-      error: function (respuestaTxt) {
-        alert('Error crítico: ' + respuestaTxt);
+      error: function (xhr) {
+        // alert('Error crítico: ' + JSON.stringify(xhr));
       }
     });
   });
-});
-
-
-$(document).ready(function ( ) {
+  // === GUARDAR NUEVO IDOL ===
   $('#guardar').click(function () {
     const url = $(this).data('url');
     const trabajadorData = {
@@ -162,57 +157,26 @@ $(document).ready(function ( ) {
       edad: $('#edad').val(),
       datos_curiosos: $('#curiosidades').val(),
       actividad: $('#actividad').val(),
-  };
+    };
     $.ajax({
-      url:url,
-      method:'POST',
-      data :  trabajadorData,
+      url: url,
+      method: 'POST',
+      data: trabajadorData,
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      success : function (respuesta) {
-        // alert(' se agrego el ido' +  JSON.stringify(respuesta));
-        // console.log('data con exito ' + respuesta);
+      success: function (respuesta) {
+        alert('Se agregó correctamente.');
+        console.log('Datos:', respuesta);
       },
-      error : function (xhr) {
-        // alert('no se puedo agregar al idol')
-        // console.error(xhr.respuesta);
+      error: function (xhr) {
+        alert('No se pudo agregar.');
+        console.error(xhr.responseText);
       }
-    })
-  })
-})
-
-
-
-$(document).ready(function () {
-  // Delegación de eventos para los botones de borrar
-  $(document).on('click', '.btnBorrar', function () {
-    const id = $(this).data('borrar');
-    const nombre = $(this).data('nombre');
-    var urlEliminar = $(this).data('delete');
-    if (confirm(` ¿Seguro que deseas eliminar a ${nombre}? ` )) {
-      $.ajax({
-        url: urlEliminar,
-        method: 'POST',
-        data: {id: id},
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        },
-        success: function (respuesta) {
-          alert('Eliminación exitosa');
-        },
-        error: function (xhr) {
-          alert('Error fatal en la eliminación');
-          console.error('Detalles del error:', xhr);
-        }
-      });
-    }
+    });
   });
-});
-
-
-$(document).ready(function () {
-  $('.btneditar').click(function () {
+  // === EDITAR IDOL ===
+  $(document).on('click', '.btneditar', function () {
     const id = $(this).data('id');
 
     $('.guardarCambios').off('click').on('click', function () {
@@ -225,6 +189,7 @@ $(document).ready(function () {
         datos_curiosos: $('#curiosidadesEditar').val(),
         actividad: $('#actividadEditar').val(),
       };
+
       $.ajax({
         url: urlEditar,
         data: { datos: Data },
@@ -233,34 +198,34 @@ $(document).ready(function () {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         },
         success: function (respuesta) {
-          alert('Datos actualizados correctamente: ' + JSON.stringify(respuesta));
+          alert('Datos actualizados correctamente.');
+          console.log(respuesta);
         },
-        error: function (respuestaTxt) {
-          alert('Error al actualizar: ' + JSON.stringify(respuestaTxt));
+        error: function (xhr) {
+          alert('Error al actualizar.');
+          console.error(xhr.responseText);
         }
       });
     });
   });
-});
 
-// imprimir
-
-
-function identificadorPorID(id) {
-  $('.generarPDF').off('click').on('click', function () {
-    const urlPDF = $(this).data('pdf');
-    $.ajax({
-      url: urlPDF,
-      method: 'GET',
-      data:  {ID: id},
-
-      success: function (respuesta) {
-        alert('Éxito en el proceso: ' + JSON.stringify(respuesta));
-      },
-      error: function (respuestaTxt) {
-        console.error('Error en la petición AJAX:', respuestaTxt);
-        alert('Error fatal: ' + JSON.stringify(respuestaTxt));
-      }
+  // === GENERAR PDF ===
+  function identificadorPorID(id) {
+    $('.generarPDF').off('click').on('click', function () {
+      const urlPDF = $(this).data('pdf');
+      $.ajax({
+        url: urlPDF,
+        method: 'GET',
+        data: { ID: id },
+        success: function (respuesta) {
+          alert('PDF generado correctamente.');
+          console.log(respuesta);
+        },
+        error: function (xhr) {
+          alert('Error al generar PDF.');
+          console.error(xhr.responseText);
+        }
+      });
     });
-  });
-}
+  }
+});

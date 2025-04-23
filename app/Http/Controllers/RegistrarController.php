@@ -28,6 +28,15 @@ class RegistrarController extends Controller
         ]);
     }
 
+  public function dataIdols(Request $request){
+
+      $perPage = $request->input('per_page', 2);
+      $data = Idols::paginate($perPage);
+      return response()->json([
+          'data de busqueda ' => $data,
+      ]);
+}
+
     public function AgregarTrabajador(Request $request)
     {
       $validatedData = $request->validate([
@@ -48,13 +57,14 @@ class RegistrarController extends Controller
     }
 
     public function eliminarTrabjador(Request $request){
-      $idolsId = $request->id;
+      $id = $request->id;
+
       $borrarIdol = Idols::select(['id' ,'nombre', 'edad','datos_curiosos','actividad','foto' ])
-                           ->where('id', $idolsId)
+                           ->where('id', $id)
                            ->delete();
 
       return response()->json([
-        'controlador reportandose' => $idolsId
+        'controlador reportandose kkk' => $borrarIdol
       ] );
     }
 
@@ -83,5 +93,4 @@ class RegistrarController extends Controller
        'query perfil controller ' => $queryPerfil,
      ]);
    }
-
 };

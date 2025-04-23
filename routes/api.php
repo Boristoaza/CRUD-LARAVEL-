@@ -13,5 +13,8 @@ Route::post('/agregar', [RegistrarController::class, 'AgregarTrabajador'])->name
 Route::post('/eliminar', [RegistrarController::class, 'eliminarTrabjador'])->name('eliminar.trabajador');
 Route::post('/editar', [RegistrarController::class, 'editarTrabajador'])->name('editar.trabajdor');
 Route::post('/perfil', [RegistrarController::class, 'perfil'])->name('perfil.idol');
+// esto trae la data desde la base de datos
+Route::get('/data',[RegistrarController::class, 'dataIdols'])->name('data.idol');
+
 
 // Route::get('/pdf', [PDFController::class, 'generadorPDF'])->name('Archivo.PDF');
