@@ -81,7 +81,7 @@
         <!-- Buscador -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-warning shadow">
           <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-white" href="#">BUSCAR IDOL</a>
+            <a class="navbar-brand fw-bold text-white" href="#">BUSCAR FAMOSO</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch"
               aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,6 +91,8 @@
               <form class="d-flex flex-grow-1 flex-wrap align-items-center gap-2 mx-3 justify-content-between"
                 role="search">
                 <div class="flex-grow-1" style="display: flex; align-items: center;" style="padding-top:100px;">
+                  <!-- Spinner oculto inicialmente -->
+
                   <input class="buscasdor form-control shadow-sm" type="search" placeholder="Buscar..."
                     aria-label="Search" id="Buscador" style="border: 2px solid #f39c12; min-width: 200px; max-width: none; width: 100%;
                     flex-grow: 1; min-width: 0; transition: all 0.3s ease-in-out; margin-right: 10px;" />
@@ -184,7 +186,7 @@
           <h5 class="modal-title" id="addModalLabel">Agregar Idols</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body agregar">
           <form id="addForm">
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
@@ -222,7 +224,7 @@
           <h5 class="modal-title text-white" id="editModalLabel"><i class="bi bi-pen"></i> Editar información </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body editar">
           <div class="row contendorEditar">
             <!-- Primera columna -->
             <div class="col-12 col-md-6 mb-4">
@@ -382,76 +384,88 @@
   </div>
 
   <!-- Footer -->
-  <footer class="text-white py-5" style="background-color: #f39c12;">
-    <div class="container text-center">
-      <h5 class="fw-bold mb-3 text-uppercase" style="letter-spacing: 1px;"> Información Importante</h5>
+  <footer class="text-white py-5"
+    style="background: linear-gradient(135deg, #f39c12, #e67e22); position: relative; overflow: hidden;">
+    <div class="container text-center position-relative" style="z-index: 1;">
+      <h5 class="fw-bold mb-4 text-uppercase" style="letter-spacing: 2px;">Información Importante</h5>
 
       <p class="mb-4 p-3 rounded" style="
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 1.8;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    padding: 15px 20px;
-    color: white;
-">
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.8;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(6px);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      max-width: 700px;
+      margin: 0 auto;
+    ">
         Este CRUD fue desarrollado por
         <strong style="
-        background: linear-gradient(45deg,rgb(7, 7, 7),rgb(18, 18, 19));
+        background: linear-gradient(45deg, #111, #333);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: bold;
-        font-size: 22px;
-        text-shadow: 2px 2px 5px rgba(17, 18, 19, 0.6);
-        transition: all 0.3s ease-in-out;
+        font-size: 24px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s;
         cursor: pointer;
-    " onmouseover="this.style.textShadow='4px 4px 10px rgba(17, 18, 19, 0.6)';"
-          onmouseout="this.style.textShadow='2px 2px 5px rgba(17, 18, 19, 0.6)';">
+        display: inline-block;
+      " onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
           Boris Toaza
         </strong> con las siguientes tecnologías:
       </p>
 
-
-      <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <span class="badge text-white px-3 py-2"
-          style="background-color: #FF2D20; font-size: 16px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-          Laravel 11
-        </span>
-        <span class="badge text-white px-3 py-2"
-          style="background-color: #7952B3; font-size: 16px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-          Bootstrap 5
-        </span>
-        <span class="badge text-white px-3 py-2"
-          style="background-color: #00758F; font-size: 16px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-          MySQL
-        </span>
-        <span class="badge text-white px-3 py-2"
-          style="background-color: #F7DF1E; color: black; font-size: 16px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-          JavaScript (AJAX)
-        </span>
-
-        <span class="badge text-white px-3 py-2"
-          style="background-color: #F7DF1E; color: black; font-size: 16px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-          CSS
-        </span>
+      <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+        <span class="badge rounded-pill px-4 py-2" style="background-color: #FF2D20; font-size: 16px;">Laravel 11</span>
+        <span class="badge rounded-pill px-4 py-2" style="background-color: #7952B3; font-size: 16px;">Bootstrap
+          5</span>
+        <span class="badge rounded-pill px-4 py-2" style="background-color: #00758F; font-size: 16px;">MySQL</span>
+        <span class="badge rounded-pill px-4 py-2 text-dark"
+          style="background-color: #F7DF1E; font-size: 16px;">JavaScript (AJAX)</span>
+        <span class="badge rounded-pill px-4 py-2 text-dark"
+          style="background-color: #F7DF1E; font-size: 16px;">CSS</span>
       </div>
     </div>
+
+    <!-- Decoración animada con burbujas -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden;">
+      <div
+        style="position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; left: -100px; animation: float 10s infinite linear;">
+      </div>
+      <div
+        style="position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: -80px; right: -80px; animation: float 12s infinite linear reverse;">
+      </div>
+    </div>
+
+    <style>
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(-20px) rotate(360deg);
+      }
+    }
+    </style>
   </footer>
 
 
   </div>
-
   <!-- Scripts -->
   <script>
   // const RUTA_DATA_IDOL = "{{ route('data.idol') }}";
   const rutaEliminar = "{{route('eliminar.trabajador')}}";
+  const perfilURL = "{{route('perfil.idol')}}";
   </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/registrarUsuario.js') }}"></script>
+  <!-- En el <head> o antes de cerrar </body> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>
